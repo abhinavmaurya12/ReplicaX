@@ -16,6 +16,24 @@
       --accent: #7c5cff;
       --accent-2: #22d3ee;
       --radius: 16px;
+      --nav-bg: rgba(11, 13, 18, .7);
+      --thumb-bg: linear-gradient(135deg, #1b1f2b, #0f1219);
+      --icon: #fff;
+      color-scheme: dark;
+    }
+    :root[data-theme="light"] {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-2: #eef1f8;
+      --border: #dde2ee;
+      --text: #151a28;
+      --muted: #5d6781;
+      --accent: #6a47ff;
+      --accent-2: #0891b2;
+      --nav-bg: rgba(245, 247, 251, .75);
+      --thumb-bg: linear-gradient(135deg, #eef1f8, #e2e7f3);
+      --icon: #151a28;
+      color-scheme: light;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -42,7 +60,7 @@
     nav {
       position: sticky; top: 0; z-index: 10;
       backdrop-filter: blur(12px);
-      background: rgba(11, 13, 18, .7);
+      background: var(--nav-bg);
       border-bottom: 1px solid var(--border);
     }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
@@ -50,6 +68,12 @@
     .logo span {
       background: linear-gradient(90deg, var(--accent), var(--accent-2));
       -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .version {
+      font-size: .72rem; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+      background: rgba(124, 92, 255, .12); color: #a78bfa;
+      border: 1px solid rgba(124, 92, 255, .35);
     }
     .nav-links { display: flex; gap: 22px; align-items: center; font-size: .95rem; color: var(--muted); }
     .nav-links a:hover { color: var(--text); }
@@ -62,6 +86,11 @@
       transition: transform .2s, border-color .2s, background .2s;
     }
     .btn:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .theme-toggle {
+      width: 40px; height: 40px; padding: 0; justify-content: center;
+      border-radius: 50%; cursor: pointer; color: var(--text); font-size: 1.1rem; line-height: 1;
+    }
+    .theme-toggle:hover { transform: translateY(-2px) rotate(15deg); }
     .btn.primary {
       background: linear-gradient(135deg, var(--accent), #5b8cff);
       border-color: transparent; color: #fff;
@@ -117,11 +146,11 @@
     }
     .thumb {
       height: 170px; display: grid; place-items: center;
-      background: linear-gradient(135deg, #1b1f2b, #0f1219);
+      background: var(--thumb-bg);
       border-bottom: 1px solid var(--border);
       position: relative;
     }
-    .thumb svg { width: 74px; height: 74px; fill: #fff; opacity: .95; }
+    .thumb svg { width: 74px; height: 74px; fill: var(--icon); opacity: .95; }
     .thumb .tag {
       position: absolute; top: 12px; right: 12px;
       font-size: .72rem; font-weight: 600; padding: 4px 10px; border-radius: 999px;
@@ -165,6 +194,20 @@
     .dots span:nth-child(3) { animation-delay: .4s; }
     @keyframes blink { 0%, 80%, 100% { opacity: .2; } 40% { opacity: 1; } }
 
+    /* LinkForge */
+    .linkforge {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: 14px; padding: 48px 28px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .linkforge h2 { font-size: 2rem; letter-spacing: -.02em; }
+    .linkforge h2 .grad {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .linkforge .lf-tag { font-weight: 600; font-size: 1.15rem; }
+    .linkforge p { max-width: 680px; color: var(--muted); }
+
     /* Footer */
     footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--muted); font-size: .9rem; }
     footer a { color: var(--text); border-bottom: 1px solid var(--border); }
@@ -178,14 +221,25 @@
       * { animation: none !important; transition: none !important; }
     }
   </style>
+  <script>
+    (function () {
+      var t = "dark";
+      try { t = localStorage.getItem("theme") || "dark"; } catch (e) {}
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
 </head>
 <body>
 
   <nav>
     <div class="container nav-inner">
-      <a href="#" class="logo">Replica<span>X</span></a>
+      <div class="brand">
+        <a href="#" class="logo">Replica<span>X</span></a>
+        <span class="version">v1.1.2</span>
+      </div>
       <div class="nav-links">
         <a href="#projects">Projects</a>
+        <button class="btn theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" title="Toggle day / night"></button>
         <a class="btn" href="https://github.com/abhinavmaurya12/ReplicaX" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
     </div>
@@ -200,6 +254,7 @@
       <div class="hero-actions">
         <a class="btn primary" href="#projects">Explore Projects</a>
         <a class="btn" href="https://github.com/abhinavmaurya12/ReplicaX" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+        <a class="btn" href="https://abhinavmaurya12.github.io/LinkForge/" target="_blank" rel="noopener">🚀 LinkForge ↗</a>
       </div>
     </div>
   </header>
@@ -242,14 +297,39 @@
     </div>
   </section>
 
+  <section id="linkforge">
+    <div class="container">
+      <div class="linkforge">
+        <span class="badge">🔗 Also check out</span>
+        <h2>Link<span class="grad">Forge</span></h2>
+        <p class="lf-tag">All My Projects. One Destination. 🚀</p>
+        <p>LinkForge is a centralized showcase for my live websites and web development projects. It brings all my deployed projects together in one place, allowing visitors to explore my work and access live demos without searching through multiple repositories.</p>
+        <a class="btn primary" href="https://abhinavmaurya12.github.io/LinkForge/" target="_blank" rel="noopener">Visit LinkForge ↗</a>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="container">
       <p>© <span id="year"></span> ReplicaX · Built by <a href="https://github.com/abhinavmaurya12" target="_blank" rel="noopener">abhinavmaurya12</a></p>
+      <p style="margin-top:8px">All my projects in one place → <a href="https://abhinavmaurya12.github.io/LinkForge/" target="_blank" rel="noopener">LinkForge</a></p>
     </div>
   </footer>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    var toggle = document.getElementById("themeToggle");
+    function applyTheme(t) {
+      document.documentElement.setAttribute("data-theme", t);
+      toggle.textContent = t === "dark" ? "☀️" : "🌙";
+      toggle.setAttribute("aria-label", t === "dark" ? "Switch to light mode" : "Switch to dark mode");
+      try { localStorage.setItem("theme", t); } catch (e) {}
+    }
+    applyTheme(document.documentElement.getAttribute("data-theme") || "dark");
+    toggle.addEventListener("click", function () {
+      applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    });
   </script>
 </body>
 </html>
