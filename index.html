@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReplicaX — Reimagine. Rebuild. Reinvent.</title>
+  <meta name="description" content="A showcase of website recreations, UI experiments, and frontend projects." />
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --surface: #131722;
+      --surface-2: #1a2030;
+      --border: #252c3d;
+      --text: #e8ecf5;
+      --muted: #8b94a9;
+      --accent: #7c5cff;
+      --accent-2: #22d3ee;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(600px 400px at 15% 0%, rgba(124, 92, 255, .22), transparent 60%),
+        radial-gradient(500px 400px at 90% 10%, rgba(34, 211, 238, .15), transparent 60%);
+      pointer-events: none; z-index: -1;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, 100% - 32px); margin-inline: auto; }
+
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(11, 13, 18, .7);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { font-weight: 800; font-size: 1.25rem; letter-spacing: -.02em; }
+    .logo span {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .nav-links { display: flex; gap: 22px; align-items: center; font-size: .95rem; color: var(--muted); }
+    .nav-links a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 999px;
+      font-weight: 600; font-size: .92rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: transform .2s, border-color .2s, background .2s;
+    }
+    .btn:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), #5b8cff);
+      border-color: transparent; color: #fff;
+    }
+    .btn.primary:hover { filter: brightness(1.1); }
+
+    /* Hero */
+    .hero { padding: 110px 0 80px; text-align: center; }
+    .badge {
+      display: inline-block; padding: 6px 14px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--muted); font-size: .82rem; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 800; letter-spacing: -.04em; line-height: 1.05;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .tagline {
+      margin-top: 18px;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      font-weight: 600; letter-spacing: .02em;
+    }
+    .tagline span { color: var(--muted); }
+    .tagline span:nth-child(1) { color: var(--accent-2); }
+    .tagline span:nth-child(2) { color: #a78bfa; }
+    .tagline span:nth-child(3) { color: #f472b6; }
+    .sub { max-width: 620px; margin: 20px auto 36px; color: var(--muted); font-size: 1.05rem; }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* Projects */
+    section { padding: 70px 0; }
+    .section-head { margin-bottom: 36px; }
+    .section-head h2 { font-size: 2rem; letter-spacing: -.02em; }
+    .section-head p { color: var(--muted); margin-top: 6px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 18px 40px -18px rgba(124, 92, 255, .5);
+    }
+    .thumb {
+      height: 170px; display: grid; place-items: center;
+      background: linear-gradient(135deg, #1b1f2b, #0f1219);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .thumb svg { width: 74px; height: 74px; fill: #fff; opacity: .95; }
+    .thumb .tag {
+      position: absolute; top: 12px; right: 12px;
+      font-size: .72rem; font-weight: 600; padding: 4px 10px; border-radius: 999px;
+      background: rgba(34, 211, 238, .12); color: var(--accent-2);
+      border: 1px solid rgba(34, 211, 238, .3);
+    }
+    .card-body { padding: 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .card-body h3 { font-size: 1.25rem; }
+    .card-body p { color: var(--muted); font-size: .95rem; flex: 1; }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+    .chip {
+      font-size: .75rem; padding: 3px 10px; border-radius: 999px;
+      background: var(--surface-2); color: var(--muted); border: 1px solid var(--border);
+    }
+    .card-actions { margin-top: 14px; }
+
+    /* Coming soon */
+    .card.soon {
+      background: transparent;
+      border: 2px dashed var(--border);
+      align-items: center; justify-content: center; text-align: center;
+      min-height: 380px; padding: 30px;
+    }
+    .card.soon:hover { transform: none; box-shadow: none; border-color: var(--accent); }
+    .soon .plus {
+      width: 64px; height: 64px; border-radius: 50%;
+      display: grid; place-items: center; font-size: 2rem;
+      color: var(--accent);
+      background: rgba(124, 92, 255, .12);
+      margin-bottom: 18px;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(124, 92, 255, .4); }
+      50% { box-shadow: 0 0 0 14px rgba(124, 92, 255, 0); }
+    }
+    .soon h3 { font-size: 1.3rem; }
+    .soon p { color: var(--muted); margin-top: 6px; }
+    .dots span { animation: blink 1.4s infinite both; }
+    .dots span:nth-child(2) { animation-delay: .2s; }
+    .dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0%, 80%, 100% { opacity: .2; } 40% { opacity: 1; } }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--muted); font-size: .9rem; }
+    footer a { color: var(--text); border-bottom: 1px solid var(--border); }
+    footer a:hover { border-color: var(--accent); }
+
+    @media (max-width: 560px) {
+      .nav-links a:not(.btn) { display: none; }
+      .hero { padding: 70px 0 50px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="logo">Replica<span>X</span></a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a class="btn" href="https://github.com/abhinavmaurya12/ReplicaX" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <span class="badge">✦ Frontend showcase</span>
+      <h1>Replica<span class="grad">X</span></h1>
+      <p class="tagline"><span>Reimagine.</span> <span>Rebuild.</span> <span>Reinvent.</span></p>
+      <p class="sub">A showcase of website recreations, UI experiments, and frontend projects.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#projects">Explore Projects</a>
+        <a class="btn" href="https://github.com/abhinavmaurya12/ReplicaX" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="projects">
+    <div class="container">
+      <div class="section-head">
+        <h2>Projects</h2>
+        <p>Recreations and experiments, built from scratch.</p>
+      </div>
+
+      <div class="grid">
+        <!-- Gitora -->
+        <article class="card">
+          <div class="thumb">
+            <span class="tag">Live</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+          </div>
+          <div class="card-body">
+            <h3>Gitora</h3>
+            <p>A clone of GitHub — recreating its look, layout, and feel with pure frontend.</p>
+            <div class="chips">
+              <span class="chip">HTML</span>
+              <span class="chip">CSS</span>
+              <span class="chip">JavaScript</span>
+            </div>
+            <div class="card-actions">
+              <a class="btn primary" href="https://abhinavmaurya12.github.io/Gitora" target="_blank" rel="noopener">View Live ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Coming soon -->
+        <article class="card soon">
+          <div class="plus">+</div>
+          <h3>Coming more soon<span class="dots"><span>.</span><span>.</span><span>.</span></span></h3>
+          <p>More clones and UI experiments are on the way.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> ReplicaX · Built by <a href="https://github.com/abhinavmaurya12" target="_blank" rel="noopener">abhinavmaurya12</a></p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
